@@ -53,7 +53,7 @@ class MessageStore {
      *            Message in question.
      * @return ID of the message.
      */
-    public synchronized int add(final Message msg) {
+    public int add(final Message msg) {
         this.store.add(msg);
         if (this.store.size() > this.messageLimit) {
             // discard first message if we're over limit
@@ -79,7 +79,7 @@ class MessageStore {
      * @return -1 if no messages yet. 0 if no messages have been discarded. Add
      *         one for every discarded message.
      */
-    public synchronized int getFirstMessageId() {
+    public int getFirstMessageId() {
         if (this.getNextMessageId() == MessageStore.INITIAL_MESSAGE_ID) {
             return -1;
         } else {
@@ -110,7 +110,7 @@ class MessageStore {
      *            message ID.)
      * @return A copy of the sub-list provided by the message store.
      */
-    private synchronized List<Message> actuallyGetFromRange(final int startId, final int endId) {
+    private List<Message> actuallyGetFromRange(final int startId, final int endId) {
         return new LinkedList<Message>(this.store.subList(startId, endId));
     }
 
@@ -123,7 +123,7 @@ class MessageStore {
      *            Greatest id, exclusive.
      * @return Unmodifiable list containing those messages.
      */
-    public synchronized List<Message> getFromRange(final int startId, final int endId) {
+    public List<Message> getFromRange(final int startId, final int endId) {
         // cache this here, so all parts of the method operate on the same data
         final int firstMessageId = this.getFirstMessageId();
         // input validation
@@ -149,7 +149,7 @@ class MessageStore {
      *            Least id, inclusive.
      * @return Unmodifiable list containing those messages.
      */
-    public synchronized List<Message> getFrom(final int startId) {
+    public List<Message> getFrom(final int startId) {
         return this.getFromRange(startId, this.getNextMessageId());
     }
 
